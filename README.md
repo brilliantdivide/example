@@ -20,3 +20,4 @@ CRM 議題的實例介紹
 
 
 [homework1-3](https://github.com/brilliantdivide/example/blob/master/Untitled10%20(2).ipynb)
+[homework1-3(新增文字)](https://github.com/brilliantdivide/example/blob/master/Homework1-3.ipynb)
