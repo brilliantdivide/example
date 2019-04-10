@@ -12,6 +12,6 @@
 
 2019-03-14 Week 4
 
-2019-03-21 Week 5 HW1 due
-
-
+2019-03-21 Week 5
+HW1-3.html
+[homework1-3](https://github.com/brilliantdivide/example/blob/master/Untitled10%20(2).ipynb)
