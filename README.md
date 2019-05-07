@@ -29,4 +29,5 @@ CRM 議題的實例介紹
 2019-04-18 Week 9
 2019-04-25 Week 10
 2019-05-02 Week 11
+[homework4-6](https://github.com/brilliantdivide/example/blob/master/HW4-6-1.html)
 2019-05-09 Week 12
