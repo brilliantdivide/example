@@ -35,7 +35,7 @@ CRM 議題的實例介紹
 
 2019-05-02 Week 11
 
-[homework4-6](https://github.com/brilliantdivide/example/blob/master/HW4-6-1.html)
+[homework4-6](http://htmlpreview.github.io/?https://github.com/brilliantdivide/example/blob/master/HW4-6-1.html)
 
 2019-05-09 Week 12
 
