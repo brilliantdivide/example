@@ -24,10 +24,17 @@ CRM 議題的實例介紹
 [homework1-3(新增文字)](https://github.com/brilliantdivide/example/blob/master/Homework1-3.ipynb)
 
 2019-03-28 Week 6
+
 2019-04-04 Week 7
+
 2019-04-11 Week 8
+
 2019-04-18 Week 9
+
 2019-04-25 Week 10
+
 2019-05-02 Week 11
+
 [homework4-6](https://github.com/brilliantdivide/example/blob/master/HW4-6-1.html)
 2019-05-09 Week 12
+
