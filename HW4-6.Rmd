@@ -1,0 +1,88 @@
+---
+title: "HW4-6"
+author: "林建廷"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+運用手邊現有資料，審計部自2013到2019的新聞稿作分析，分析其常用各年度的常用詞彙，以此觀察審計部在各年度新聞發布的重點為何，預計較相近的年份差異可能較小，但相隔較遠的年度可能新聞發布的重點差異就較大。
+
+
+## 1. 讀取需要使用的套件
+
+```{r packages, message=FALSE}
+library(tidyverse)
+library(dplyr)
+```
+
+## 2. 讀入檔案
+
+```{r data}
+load("data/nao.RData") 
+```
+
+## 3. 斷詞並移除所有數字
+
+```{r segment_rmnum}
+library(jiebaR)
+cutter <- jiebaR::worker()
+
+data_all <- data_all %>%
+  mutate(word = map(fulltext, segment, cutter))%>%
+  unnest(word)
+data_all$word <- lapply(data_all$word, function(x) gsub("[0-9]", "", x))
+
+
+```
+
+## 4. 移除停用字
+
+```{r rm_stopwords}
+
+stopwords <- tibble(stopword = stopwords::stopwords(language = "zh", source = "misc"))
+stopwords <- add_row(stopwords,stopword=c("年","月", "日", "民國", "與", "於", "並", "為", "項"))
+data_all$word <- unlist(data_all$word)
+data<- data_all %>%
+  anti_join(stopwords,
+    by = c("word" = "stopword") )
+```
+
+## 5. 繪圖
+
+```{r plot}
+data <- data[!data$word %in%"", ]
+data$date <- gsub("-\\d{2}-\\d{2}\\s","",data$date)
+data <- data %>% select(date,word)%>%
+  group_by(date, word) %>%
+  mutate(word_n = n())%>%
+  ungroup()%>%
+  distinct(date, word, .keep_all = TRUE)%>%
+  group_by(date)%>%
+  top_n(10, wt = word_n) %>%
+  arrange(-as.numeric(date),-as.numeric(word_n)) %>% 
+  ungroup()
+data
+
+library(ggplot2)
+
+ggplot(data,aes(size=10,x=word,y=word_n,fill=date))+
+  geom_histogram(size=100,stat = "identity",binwidth = 10)+
+  facet_wrap(. ~ date,scale="free")+
+  coord_flip()+
+  labs(y = "次數", x = "詞彙", title = "審計部常用詞彙")+
+  theme_light(base_size = 7)+
+  theme(legend.position = "none",axis.title.x =element_text(color="#66CC99",face="bold",size=15),axis.title.y =element_text(color="#66CC99",face="bold",size=15),plot.title=element_text(hjust = 0.5,face="bold",size=20,color = "#990033"))
+
+
+
+```
+
+整體來說，審計部歷年來的新聞發布重點都與其重點工作「審計」有關，審計一詞在每年的常用詞彙中都有出現，可見其發布新聞的首要重點便是要宣達其審計工作之進行進度、結果等；就歷年結果來看，我認為2013、2014、2015是較接近的三年，這三年中，「億餘元」、「決算」、「審核」等詞的出現頻率相當高，個人推斷新聞中的重點主要都是談論審計部在審核、決算後，報告該年度的收支、欠債等有幾億餘元。
+
+而在2016到2019又可分為另外一組，這四年常出現「愛心」、「關懷」、「發展」、「推動」、「永續」、「國家」、「政府」等詞，個人認為這些詞是比較偏向在政策宣傳、執行中才會出現的詞彙，可見在這幾年當中審計部發布新聞主要的目的是為了宣傳政府的政策執行與績效等，與前幾年著重在預算的審核、決算等有很大的不同。
+
+總結來說，我認為造成前三年與後四年間新聞發布的重點有所差異的原因很可能在於總統與執政團隊的更換，因為兩者剛好以馬英九下台，蔡英文上台的2016年做分界，馬政府任內的審計部新聞重點多在強調預算的決算、審核等；而蔡政府任內審計部新聞的重點則有所改變，著重在宣傳政府所執行的政策。
